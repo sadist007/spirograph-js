@@ -1,3 +1,12 @@
+/**
+ * HSV to RGB Convertor.
+ * 
+ * @param h - hue: 0-359°
+ * @param s - saturation: 0-100%
+ * @param v - value (brightness): 0-100%
+ * 
+ * @return RGB value as string like 'fd45a5'
+ */
 function rgb (h, s, v)
 {
 	h = ( h < 0 ) ? 0 : ( (h >= 360) ? 359 : h );
