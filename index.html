@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Spirograph</title>
+        <meta charset="utf-8" />
+		<script type="text/javascript" src="color.js"></script>
+   		<script type="text/javascript" src="funcs.js"></script>
+        <script type="text/javascript">
+			window.onload = function (e)
+			{
+				var count = 9;
+				var ctx = document.getElementById('spirograph').getContext('2d');
+				var curves = new Array();
+
+				function reload()
+				{
+					for ( var i in curves )
+						if ( typeof(curves[i]) != undefined && typeof(curves[i].stop) != undefined )
+							curves[i].free();
+
+					ctx.fillStyle = '#FFFFFF';
+					ctx.fillRect(0, 0, ctx.canvas.height, ctx.canvas.width);
+
+					for ( var i = 0; i < count; i++ )
+					{
+						var s = Math.round(359 / count);
+						var f = Math.round(s / 2);
+						var c = '#' + rgb(s * i + Math.random() * f, 80 + Math.round(Math.random() * 20), 50 + Math.round(Math.random() * 50));
+						curves.push(new spirograph(ctx, ( Math.floor(Math.random()*2) == 0 ? new drawHyp('h-' + i, c) : new drawEpi('e-' + i, c) )));
+					}
+				}
+
+				function saveto()
+				{
+					var link = document.createElement('a');
+					link.href = ctx.canvas.toDataURL('image/png');
+					link.download = 'spirograph.png';
+					var evt = document.createEvent('MouseEvents');
+					evt.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+					link.dispatchEvent(evt);
+				}
+
+				if ( document.getElementById('reload') )
+					document.getElementById('reload').onclick = reload;
+
+				if ( document.getElementById('saveto') )
+					document.getElementById('saveto').onclick = saveto;
+
+				reload();
+			}
+		</script>
+ 		<link type="text/css" rel="stylesheet" href="styles.css" />
+</head>
+    <body>
+        <canvas width="480" height="480" id="spirograph">Обновите браузер</canvas>
+		<div id="info"></div>
+		<div id="controls" class="hide">
+			<input type="button" name="reload" id="reload" value="New Image" />
+			<input type="button" name="saveto" id="saveto" value="Save As &hellip;" />
+		</div>
+    </body>
+</html>
